@@ -24,4 +24,12 @@ public class Range {
     public void setTo(double to) {
         this.to = to;
     }
+
+    public double getLength() {
+        return to - from;
+    }
+
+    public boolean isInside(double number) {
+        return number >= from && number <= to;
+    }
 }
