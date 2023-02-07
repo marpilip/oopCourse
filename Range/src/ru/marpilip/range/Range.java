@@ -1,8 +1,8 @@
 package ru.marpilip.range;
 
 public class Range {
-    double from;
-    double to;
+    private double from;
+    private double to;
 
     public Range(double from, double to) {
         this.from = from;
