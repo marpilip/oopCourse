@@ -2,25 +2,41 @@ package ru.marpilip.range_main;
 
 import ru.marpilip.range.Range;
 
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Range range1 = new Range(10, 15);
+        Range range2 = new Range(7, 14);
 
-        System.out.println("Введите число, с которого начинается диапазон:");
-        double from = scanner.nextDouble();
+        System.out.println("Пересечение заданных интервалов:");
 
-        System.out.println("Введите число, которым заканчивается диапазон:");
-        double to = scanner.nextDouble();
+        if (range1.getIntersection(range1, range2) == null) {
+            System.out.println("Пересечение пусто");
+        } else {
+            System.out.println("Пересечение: от " + range1.getIntersection(range1, range2).getFrom() + " до " + range1.getIntersection(range1, range2).getTo());
+        }
 
-        Range range = new Range(from, to);
+        System.out.println("Объединение заданных интервалов:");
 
-        System.out.println("Длина вашего диапазона = " + range.getLength());
+        if (range1.getCombining(range1, range2) == null) {
+            System.out.println("Объединение пусто");
+        } else {
+            int i = 0;
+            while (range1.getCombining(range1, range2)[i] != null) {
+                System.out.println("Интервал " + (i + 1) + " : от " + range1.getCombining(range1, range2)[i].getFrom() + " до " + range1.getCombining(range1, range2)[i].getTo());
+                i++;
+            }
+        }
 
-        System.out.println("Введите число, которое хотите проверить на принадлежность диапазону:");
-        double numberInRange = scanner.nextDouble();
+        System.out.println("Разность заданных интервалов: ");
 
-        System.out.println("Число " + numberInRange + " принадлежит заданному диапазону? " + range.isInside(numberInRange));
+        if (range1.getDifference(range1, range2) == null) {
+            System.out.println("Разность пуста");
+        } else {
+            int i = 0;
+            while (range1.getDifference(range1, range2)[i] != null) {
+                System.out.println("Интервал " + (i + 1) + " : от " + range1.getDifference(range1, range2)[i].getFrom() + " до " + range1.getDifference(range1, range2)[i].getTo());
+                i++;
+            }
+        }
     }
 }
