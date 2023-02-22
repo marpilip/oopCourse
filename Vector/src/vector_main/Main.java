@@ -1,0 +1,46 @@
+package vector_main;
+
+import Vector.Vector;
+
+public class Main {
+    public static void main(String[] args) {
+        double[] components = {1, 3, 6};
+        double[] components2 = {1, 2, 3};
+        double[] components3 = {1, 2, 4, 5};
+
+        Vector vector1 = new Vector(5, components);
+        Vector vector2 = new Vector(3, components2);
+        Vector vector3 = new Vector(3, components3);
+
+        System.out.println("Vector 1: " + vector1);
+        System.out.println("Vector 2: " + vector2);
+
+        System.out.println("Sum with vector 1: " + vector1.getSum(vector2));
+        System.out.println("Difference with vector 1: " + vector1.getDifference(vector2));
+        System.out.println("Composition with vector 1: " + vector1.getScalarComposition(5));
+
+        System.out.println();
+
+        System.out.println("Rotation change: " + vector1.changeRotation());
+        System.out.println("Length of vector 3: " + vector3.getLength());
+        System.out.println(vector3);
+
+        System.out.println();
+
+        System.out.println("Component with index 1: " + vector3.getComponent(1));
+        vector3.setComponent(1, 3);
+        System.out.println("New component with index 1: " + vector3.getComponent(1));
+
+        System.out.println();
+
+        System.out.println("Vectors are equals: " + vector2.equals(vector3));
+
+        System.out.println();
+
+        System.out.println("Vector 1: " + vector2);
+        System.out.println("Vector 2: " + vector3);
+        System.out.println("Static method sum: " + Vector.getSum(vector2, vector3));
+        System.out.println("Static method difference: " + Vector.getDifference(vector2, vector3));
+        System.out.println("Static method scalar composition: " + Vector.getScalarComposition(vector2, vector3));
+    }
+}
