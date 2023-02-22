@@ -8,7 +8,7 @@ public class Vector {
     double[] components = new double[n];
 
     public Vector(int n) {
-        if (n < 0) {
+        if (n <= 0) {
             throw new IllegalArgumentException("Размерность должна быть больше 0");
         }
 
@@ -26,7 +26,7 @@ public class Vector {
     }
 
     public Vector(int n, double[] components) {
-        if (n < 0) {
+        if (n <= 0) {
             throw new IllegalArgumentException("Размерность должна быть больше 0");
         }
 
