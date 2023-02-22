@@ -4,11 +4,11 @@ import Vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-        double[] components = {1, 3, 6};
+        double[] components1 = {1, 3, 6};
         double[] components2 = {1, 2, 3};
         double[] components3 = {1, 2, 4, 5};
 
-        Vector vector1 = new Vector(5, components);
+        Vector vector1 = new Vector(5, components1);
         Vector vector2 = new Vector(3, components2);
         Vector vector3 = new Vector(3, components3);
 
