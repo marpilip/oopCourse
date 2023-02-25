@@ -2,41 +2,26 @@ package ru.marpilip.range_main;
 
 import ru.marpilip.range.Range;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
-        Range range1 = new Range(10, 15);
-        Range range2 = new Range(7, 14);
+        Range range1 = new Range(10, 25);
+        Range range2 = new Range(0, 25);
 
         System.out.println("Пересечение заданных интервалов:");
 
-        if (range1.getIntersection(range1, range2) == null) {
-            System.out.println("Пересечение пусто");
-        } else {
-            System.out.println("Пересечение: от " + range1.getIntersection(range1, range2).getFrom() + " до " + range1.getIntersection(range1, range2).getTo());
-        }
+        Range rangesIntersection = range1.getIntersection(range2);
+        System.out.println(rangesIntersection);
 
         System.out.println("Объединение заданных интервалов:");
 
-        if (range1.getCombining(range1, range2) == null) {
-            System.out.println("Объединение пусто");
-        } else {
-            int i = 0;
-            while (range1.getCombining(range1, range2)[i] != null) {
-                System.out.println("Интервал " + (i + 1) + " : от " + range1.getCombining(range1, range2)[i].getFrom() + " до " + range1.getCombining(range1, range2)[i].getTo());
-                i++;
-            }
-        }
+        Range[] rangesUnion = range1.getUnion(range2);
+        System.out.println(Arrays.toString(rangesUnion));
 
-        System.out.println("Разность заданных интервалов: ");
+        System.out.println("Разность заданных интервалов:");
 
-        if (range1.getDifference(range1, range2) == null) {
-            System.out.println("Разность пуста");
-        } else {
-            int i = 0;
-            while (range1.getDifference(range1, range2)[i] != null) {
-                System.out.println("Интервал " + (i + 1) + " : от " + range1.getDifference(range1, range2)[i].getFrom() + " до " + range1.getDifference(range1, range2)[i].getTo());
-                i++;
-            }
-        }
+        Range[] rangesDifference = range1.getDifference(range2);
+        System.out.println(Arrays.toString(rangesDifference));
     }
 }

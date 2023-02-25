@@ -33,42 +33,47 @@ public class Range {
         return number >= from && number <= to;
     }
 
-    public Range getIntersection(Range range1, Range range2) {
-        if (range1.getTo() < range2.getFrom() || range1.getFrom() > range2.getTo()) { //пересечения нет
+    public Range getIntersection(Range range) {
+        if (to <= range.getFrom() || from >= range.getTo()) { // пересечения нет
             return null;
-        } else {
-            return new Range(Math.max(range1.getFrom(), range2.getFrom()), Math.min(range1.getTo(), range2.getTo()));
         }
+
+        return new Range(Math.max(from, range.getFrom()), Math.min(to, range.getTo()));
     }
 
-    public Range[] getCombining(Range range1, Range range2) {
-        Range[] ranges = new Range[2];
-
-        if (range1.getTo() < range2.getFrom() || range1.getFrom() > range2.getTo()) {
-            ranges[0] = range1;
-            ranges[1] = range2;
-        } else {
-            Range range = new Range(Math.min(range1.getFrom(), range2.getFrom()), Math.max(range1.getTo(), range2.getTo()));
-            ranges[0] = range;
+    public Range[] getUnion(Range range2) {
+        if (to < range2.getFrom() || from > range2.getTo()) {
+            return new Range[]{new Range(from, to), range2};
         }
 
-        return ranges;
+        return new Range[]{new Range(Math.min(from, range2.getFrom()), Math.max(to, range2.getTo()))};
     }
 
-    public Range[] getDifference(Range range1, Range range2) {
-        Range[] ranges = new Range[2];
-
-        if (range1.getTo() < range2.getFrom() || range1.getFrom() > range2.getTo() || (range1.getFrom() > range2.getFrom() && range1.getTo() < range2.getTo())) {
-            ranges = null;
-        } else if (range1.getFrom() >= range2.getFrom() && range1.getTo() >= range2.getTo()) {
-            ranges[0] = new Range(range2.getTo(), range1.getTo());
-        } else if (range1.getFrom() <= range2.getFrom() && range1.getTo() <= range2.getTo()) {
-            ranges[0] = new Range(range2.getFrom(), range1.getTo());
-        } else if (range1.isInside(range2.getFrom()) && range1.isInside(range2.getTo())) {
-            ranges[0] = new Range(range1.getFrom(), range2.getFrom());
-            ranges[1] = new Range(range2.getTo(), range1.getTo());
+    public Range[] getDifference(Range range) {
+        if (to < range.getFrom() || from > range.getTo() || (from > range.getFrom() && to < range.getTo())) {
+            return new Range[]{};
         }
 
-        return ranges;
+        if (from >= range.getFrom() && to >= range.getTo()) {
+            return new Range[]{new Range(range.getTo(), to)};
+        }
+
+        if (from <= range.getFrom() && to <= range.getTo()) {
+            return new Range[]{new Range(from, range.getFrom())};
+        }
+
+        if (this.isInside(range.getFrom()) && this.isInside(range.getTo())) {
+            return new Range[]{
+                    new Range(from, range.getFrom()),
+                    new Range(range.getTo(), to)
+            };
+        }
+
+        return new Range[]{};
+    }
+
+    @Override
+    public String toString() {
+        return "(" + from + "; " + to + ")";
     }
 }
