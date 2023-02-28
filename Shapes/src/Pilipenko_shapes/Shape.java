@@ -1,6 +1,6 @@
-package Shapes;
+package Pilipenko_shapes;
 
-public interface Shapes {
+public interface Shape {
     double getWidth();
 
     double getHeight();

@@ -1,12 +1,16 @@
-package Shapes;
+package Pilipenko_shapes.shapes;
 
-import java.util.Objects;
+import Pilipenko_shapes.Shape;
 
-public class Square implements Shapes {
+public class Square implements Shape {
     private final double sideLength;
 
     public Square(double sideLength) {
         this.sideLength = sideLength;
+    }
+
+    public double getSideLength() {
+        return sideLength;
     }
 
     @Override
@@ -31,19 +35,26 @@ public class Square implements Shapes {
 
     @Override
     public String toString() {
-        return getClass() + "; area = " + getArea() + "; perimeter = " + getPerimeter() + "; width = " + getWidth() + "; height = " + getHeight();
+        return "Square: sideLength = " + sideLength;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Square square = (Square) o;
-        return Double.compare(square.sideLength, sideLength) == 0;
+        return square.sideLength == sideLength;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sideLength);
+        int hash = 2;
+        return 31 * hash + Double.hashCode(sideLength);
     }
 }

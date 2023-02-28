@@ -1,12 +1,17 @@
-package Shapes;
+package Pilipenko_shapes.shapes;
 
-import java.util.Objects;
+import Pilipenko_shapes.Shape;
 
-public class Circle implements Shapes {
+
+public class Circle implements Shape {
     private final double radius;
 
     public Circle(double radius) {
         this.radius = radius;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 
     @Override
@@ -31,19 +36,26 @@ public class Circle implements Shapes {
 
     @Override
     public String toString() {
-        return getClass() + "; area = " + getArea() + "; perimeter = " + getPerimeter() + "; width = " + getWidth() + "; height = " + getHeight();
+        return "Circle: radius = " + radius;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Circle circle = (Circle) o;
-        return Double.compare(circle.radius, radius) == 0;
+        return circle.radius == radius;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(radius);
+        int hash = 2;
+        return 31 * hash + Double.hashCode(radius);
     }
 }
