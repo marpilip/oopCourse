@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Range range1 = new Range(10, 25);
-        Range range2 = new Range(0, 25);
+        Range range1 = new Range(5, 10);
+        Range range2 = new Range(30, 40);
 
         System.out.println("Пересечение заданных интервалов:");
 

@@ -34,38 +34,38 @@ public class Range {
     }
 
     public Range getIntersection(Range range) {
-        if (to <= range.getFrom() || from >= range.getTo()) { // пересечения нет
+        if (to <= range.from || from >= range.to) { // пересечения нет
             return null;
         }
 
-        return new Range(Math.max(from, range.getFrom()), Math.min(to, range.getTo()));
+        return new Range(Math.max(from, range.from), Math.min(to, range.to));
     }
 
-    public Range[] getUnion(Range range2) {
-        if (to < range2.getFrom() || from > range2.getTo()) {
-            return new Range[]{new Range(from, to), range2};
+    public Range[] getUnion(Range range) {
+        if (to < range.from || from > range.to) {
+            return new Range[]{new Range(from, to), new Range(range.from, range.to)};
         }
 
-        return new Range[]{new Range(Math.min(from, range2.getFrom()), Math.max(to, range2.getTo()))};
+        return new Range[]{new Range(Math.min(from, range.from), Math.max(to, range.to))};
     }
 
     public Range[] getDifference(Range range) {
-        if (to < range.getFrom() || from > range.getTo() || (from > range.getFrom() && to < range.getTo())) {
+        if (to <= range.from || from >= range.to) {
             return new Range[]{};
         }
 
-        if (from >= range.getFrom() && to >= range.getTo()) {
-            return new Range[]{new Range(range.getTo(), to)};
+        if (from >= range.from && to >= range.to) {
+            return new Range[]{new Range(range.to, to)};
         }
 
-        if (from <= range.getFrom() && to <= range.getTo()) {
-            return new Range[]{new Range(from, range.getFrom())};
+        if (from <= range.from && to <= range.to) {
+            return new Range[]{new Range(from, range.from)};
         }
 
-        if (this.isInside(range.getFrom()) && this.isInside(range.getTo())) {
+        if (range.from >= from) {
             return new Range[]{
-                    new Range(from, range.getFrom()),
-                    new Range(range.getTo(), to)
+                    new Range(from, range.from),
+                    new Range(range.to, to)
             };
         }
 
