@@ -1,7 +1,4 @@
-package Pilipenko_shapes.shapes;
-
-import Pilipenko_shapes.Shape;
-
+package oopcourse.pilipenko.shapes;
 
 public class Circle implements Shape {
     private final double radius;

@@ -1,6 +1,4 @@
-package Pilipenko_shapes.shapes;
-
-import Pilipenko_shapes.Shape;
+package oopcourse.pilipenko.shapes;
 
 public class Square implements Shape {
     private final double sideLength;

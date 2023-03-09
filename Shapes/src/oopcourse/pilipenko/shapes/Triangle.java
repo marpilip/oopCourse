@@ -1,6 +1,4 @@
-package Pilipenko_shapes.shapes;
-
-import Pilipenko_shapes.Shape;
+package oopcourse.pilipenko.shapes;
 
 public class Triangle implements Shape {
     private final double x1;
@@ -60,14 +58,10 @@ public class Triangle implements Shape {
 
     @Override
     public double getPerimeter() {
-        double sideLength12 = getSideLength(x1, y1, x2, y2);
-        double sideLength23 = getSideLength(x2, y2, x3, y3);
-        double sideLength31 = getSideLength(x3, y3, x1, y1);
-
-        return sideLength12 + sideLength31 + sideLength23;
+        return getSideLength(x1, y1, x2, y2) + getSideLength(x3, y3, x1, y1) + getSideLength(x2, y2, x3, y3);
     }
 
-    public double getSideLength(double x1, double y1, double x2, double y2) {
+    private static double getSideLength(double x1, double y1, double x2, double y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
@@ -89,16 +83,18 @@ public class Triangle implements Shape {
         }
 
         Triangle triangle = (Triangle) o;
-        return triangle.x1 == x1 && triangle.y1 == y1 &&
-                triangle.x2 == x2 && triangle.y2 == y2 &&
-                triangle.x3 == x3 && triangle.y3 == y3;
+        return triangle.x1 == x1 && triangle.y1 == y1
+                && triangle.x2 == x2 && triangle.y2 == y2
+                && triangle.x3 == x3 && triangle.y3 == y3;
     }
 
     @Override
     public int hashCode() {
-        int hash = 2;
-        return 31 * hash + Double.hashCode(x1) + Double.hashCode(y1) +
-                Double.hashCode(x2) + Double.hashCode(y2) +
-                Double.hashCode(x3) + Double.hashCode(y3);
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Double.hashCode(x1) + Double.hashCode(y1)
+                + Double.hashCode(x2) + Double.hashCode(y2)
+                + Double.hashCode(x3) + Double.hashCode(y3);
+        return hash;
     }
 }

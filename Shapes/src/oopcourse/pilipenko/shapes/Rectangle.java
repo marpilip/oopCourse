@@ -1,6 +1,4 @@
-package Pilipenko_shapes.shapes;
-
-import Pilipenko_shapes.Shape;
+package oopcourse.pilipenko.shapes;
 
 public class Rectangle implements Shape {
     private final double width;
@@ -10,7 +8,6 @@ public class Rectangle implements Shape {
         this.width = width;
         this.height = height;
     }
-
 
     @Override
     public double getWidth() {
@@ -34,7 +31,7 @@ public class Rectangle implements Shape {
 
     @Override
     public String toString() {
-        return "Rectangle: width = " + getWidth() + "; height = " + getHeight();
+        return "Rectangle: width = " + width + "; height = " + height;
     }
 
     @Override
@@ -53,7 +50,9 @@ public class Rectangle implements Shape {
 
     @Override
     public int hashCode() {
-        int hash = 2;
-        return 31 * hash + Double.hashCode(width) + Double.hashCode(height);
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Double.hashCode(width) + Double.hashCode(height);
+        return hash;
     }
 }

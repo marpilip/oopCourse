@@ -1,4 +1,4 @@
-package Pilipenko_shapes;
+package oopcourse.pilipenko.shapes;
 
 public interface Shape {
     double getWidth();

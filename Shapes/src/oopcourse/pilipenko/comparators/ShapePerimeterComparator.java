@@ -1,6 +1,6 @@
-package Pilipenko_shapes.comparators;
+package oopcourse.pilipenko.comparators;
 
-import Pilipenko_shapes.Shape;
+import oopcourse.pilipenko.shapes.Shape;
 
 import java.util.Comparator;
 
