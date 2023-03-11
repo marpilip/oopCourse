@@ -23,9 +23,7 @@ public class Matrix {
         this.matrix = new double[rows][columns];
 
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                this.matrix[i][j] = matrix.matrix[i][j];
-            }
+            System.arraycopy(matrix.matrix[i], 0, this.matrix[i], 0, columns);
         }
     }
 
