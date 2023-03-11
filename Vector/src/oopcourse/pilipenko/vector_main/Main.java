@@ -1,6 +1,6 @@
-package oopcourse.vector.main.pilipenko;
+package oopcourse.pilipenko.vector_main;
 
-import oopcourse.vector.pilipenko.Vector;
+import oopcourse.pilipenko.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,7 +12,6 @@ public class Main {
         Vector vector2 = new Vector(3, components2);
         Vector vector3 = new Vector(3, components3);
         Vector vector4 = new Vector(3);
-
 
         System.out.println(vector1);
         System.out.println(vector4);
@@ -31,7 +30,7 @@ public class Main {
 
         System.out.println();
 
-        System.out.println("Rotation change: " + vector1.deployRotation());
+        System.out.println("Rotation change: " + vector1.unwrap());
         System.out.println("Length of vector 3: " + vector3.getLength());
         System.out.println(vector3);
 
@@ -51,6 +50,9 @@ public class Main {
         System.out.println("Vector 2: " + vector3);
         System.out.println("Static method sum: " + Vector.getSum(vector2, vector3));
         System.out.println("Static method difference: " + Vector.getDifference(vector2, vector3));
-        System.out.println("Static method scalar composition: " + Vector.getProductByScalar(vector2, vector3));
+
+        Vector vector5 = new Vector(new double[]{2, 3, 4});
+        Vector vector6 = new Vector(new double[]{3, 4, 5, 105, 12, 13});
+        System.out.println("Static method scalar composition: " + Vector.getScalarProduct(vector5, vector6));
     }
 }

@@ -1,4 +1,4 @@
-package oopcourse.vector.pilipenko;
+package oopcourse.pilipenko.vector;
 
 import java.util.Arrays;
 
@@ -10,16 +10,16 @@ public class Vector {
             throw new IllegalArgumentException("Недопустимое значение: " + size + ". Размерность должна быть больше 0");
         }
 
-        this.components = new double[size];
+        components = new double[size];
     }
 
     public Vector(Vector vector) {
-        this.components = vector.components.clone();
+        components = vector.components.clone();
     }
 
     public Vector(double[] components) {
         if (components.length == 0) {
-            throw new IllegalArgumentException("Недопустимое значение: " + components.length + ". Размерность должна быть больше 0");
+            throw new IllegalArgumentException("Недопустимое значение длины массива: 0. Размерность должна быть больше 0");
         }
 
         this.components = components.clone();
@@ -32,7 +32,6 @@ public class Vector {
 
         this.components = Arrays.copyOf(components, size);
     }
-
 
     public int getSize() {
         return components.length;
@@ -48,12 +47,12 @@ public class Vector {
 
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
 
-        return stringBuilder + "}";
+        return stringBuilder.append("}").toString();
     }
 
     public void add(Vector vector) {
-        if (components.length < vector.getSize()) {
-            components = Arrays.copyOf(components, vector.getSize());
+        if (components.length < vector.components.length) {
+            components = Arrays.copyOf(components, vector.components.length);
         }
 
         for (int i = 0; i < vector.getSize(); i++) {
@@ -62,8 +61,8 @@ public class Vector {
     }
 
     public void subtract(Vector vector) {
-        if (components.length < vector.getSize()) {
-            components = Arrays.copyOf(components, vector.getSize());
+        if (components.length < vector.components.length) {
+            components = Arrays.copyOf(components, vector.components.length);
         }
 
         for (int i = 0; i < vector.getSize(); i++) {
@@ -77,7 +76,7 @@ public class Vector {
         }
     }
 
-    public Vector deployRotation() {
+    public Vector unwrap() {
         multiplyByScalar(-1);
 
         return this;
@@ -103,7 +102,7 @@ public class Vector {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if (o == this) {
             return true;
         }
 
@@ -121,21 +120,24 @@ public class Vector {
     }
 
     public static Vector getSum(Vector vector1, Vector vector2) {
-        vector1.add(vector2);
+        Vector vector = new Vector(vector1);
+        vector.add(vector2);
 
-        return vector1;
+        return vector;
     }
 
     public static Vector getDifference(Vector vector1, Vector vector2) {
-        vector1.subtract(vector2);
+        Vector vector = new Vector(vector1);
+        vector.subtract(vector2);
 
-        return vector1;
+        return vector;
     }
 
-    public static double getProductByScalar(Vector vector1, Vector vector2) {
+    public static double getScalarProduct(Vector vector1, Vector vector2) {
         double result = 0;
+        int vectorSize = Math.min(vector1.getSize(), vector2.getSize());
 
-        for (int i = 0; i < Math.max(vector1.getSize(), vector2.getSize()); i++) {
+        for (int i = 0; i < vectorSize; i++) {
             result += vector1.components[i] * vector2.components[i];
         }
 
