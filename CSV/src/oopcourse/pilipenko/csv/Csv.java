@@ -76,7 +76,7 @@ public class Csv {
         return stringBuilder.toString();
     }
 
-    public static void writeHtml(List<List<String>> table, String htmlFile) {
+    private static void writeHtml(List<List<String>> table, String htmlFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(htmlFile))) {
             writer.write("<table>");
             writer.newLine();
