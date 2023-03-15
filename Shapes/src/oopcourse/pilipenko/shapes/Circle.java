@@ -38,7 +38,7 @@ public class Circle implements Shape {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if (o == this) {
             return true;
         }
 

@@ -1,4 +1,4 @@
-package oopcourse.pilipenko.comparators;
+package oopcourse.pilipenko.shapes_comparators;
 
 import oopcourse.pilipenko.shapes.Shape;
 

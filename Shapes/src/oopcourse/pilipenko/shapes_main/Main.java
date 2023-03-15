@@ -1,7 +1,7 @@
 package oopcourse.pilipenko.shapes_main;
 
-import oopcourse.pilipenko.comparators.ShapeAreaComparator;
-import oopcourse.pilipenko.comparators.ShapePerimeterComparator;
+import oopcourse.pilipenko.shapes_comparators.ShapeAreaComparator;
+import oopcourse.pilipenko.shapes_comparators.ShapePerimeterComparator;
 import oopcourse.pilipenko.shapes.Rectangle;
 import oopcourse.pilipenko.shapes.Shape;
 import oopcourse.pilipenko.shapes.Circle;
@@ -37,10 +37,8 @@ public class Main {
     }
 
     public static Shape getShapeWithSecondMaxPerimeter(Shape[] shapes) {
-        if (shapes.length == 0) {
-            throw new IllegalArgumentException("Массив пустой");
-        } else if (shapes.length == 1) {
-            throw new IllegalArgumentException("Массив размера 1, нет второго объекта");
+        if (shapes.length == 0 || shapes.length == 1) {
+            throw new IllegalArgumentException("Массив размера: " + shapes.length + ". Необходим массив минимум размера: 2.");
         }
 
         Arrays.sort(shapes, new ShapePerimeterComparator());
