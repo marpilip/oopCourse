@@ -55,8 +55,8 @@ public class Vector {
             components = Arrays.copyOf(components, vector.components.length);
         }
 
-        for (int i = 0; i < vector.getSize(); i++) {
-            this.components[i] += vector.components[i];
+        for (int i = 0; i < vector.components.length; i++) {
+            components[i] += vector.components[i];
         }
     }
 
@@ -65,8 +65,8 @@ public class Vector {
             components = Arrays.copyOf(components, vector.components.length);
         }
 
-        for (int i = 0; i < vector.getSize(); i++) {
-            this.components[i] -= vector.components[i];
+        for (int i = 0; i < vector.components.length; i++) {
+            components[i] -= vector.components[i];
         }
     }
 
@@ -76,7 +76,7 @@ public class Vector {
         }
     }
 
-    public Vector unwrap() {
+    public Vector expand() {
         multiplyByScalar(-1);
 
         return this;
@@ -135,9 +135,9 @@ public class Vector {
 
     public static double getScalarProduct(Vector vector1, Vector vector2) {
         double result = 0;
-        int vectorSize = Math.min(vector1.getSize(), vector2.getSize());
+        int vectorMinSize = Math.min(vector1.getSize(), vector2.getSize());
 
-        for (int i = 0; i < vectorSize; i++) {
+        for (int i = 0; i < vectorMinSize; i++) {
             result += vector1.components[i] * vector2.components[i];
         }
 
