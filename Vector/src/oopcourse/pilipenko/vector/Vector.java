@@ -76,7 +76,7 @@ public class Vector {
         }
     }
 
-    public Vector expand() {
+    public Vector rotate() {
         multiplyByScalar(-1);
 
         return this;
@@ -135,9 +135,9 @@ public class Vector {
 
     public static double getScalarProduct(Vector vector1, Vector vector2) {
         double result = 0;
-        int vectorMinSize = Math.min(vector1.getSize(), vector2.getSize());
+        int minVectorSize = Math.min(vector1.getSize(), vector2.getSize());
 
-        for (int i = 0; i < vectorMinSize; i++) {
+        for (int i = 0; i < minVectorSize; i++) {
             result += vector1.components[i] * vector2.components[i];
         }
 
