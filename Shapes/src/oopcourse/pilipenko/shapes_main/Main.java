@@ -37,7 +37,7 @@ public class Main {
     }
 
     public static Shape getShapeWithSecondMaxPerimeter(Shape[] shapes) {
-        if (shapes.length == 0 || shapes.length == 1) {
+        if (shapes.length <= 1) {
             throw new IllegalArgumentException("Массив размера: " + shapes.length + ". Необходим массив минимум размера: 2.");
         }
 
