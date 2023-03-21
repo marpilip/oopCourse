@@ -30,7 +30,7 @@ public class Main {
 
         System.out.println();
 
-        System.out.println("Rotation change: " + vector1.rotate());
+        System.out.println("Rotation change: " + vector1.reverse());
         System.out.println("Length of vector 3: " + vector3.getLength());
         System.out.println(vector3);
 

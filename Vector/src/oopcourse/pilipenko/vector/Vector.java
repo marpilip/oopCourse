@@ -76,7 +76,7 @@ public class Vector {
         }
     }
 
-    public Vector rotate() {
+    public Vector reverse() {
         multiplyByScalar(-1);
 
         return this;

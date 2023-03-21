@@ -46,17 +46,17 @@ public class Main {
         matrix3.multiplyByScalar(-1);
         System.out.println("Умножение на скаляр -1: " + matrix3);
 
-        Matrix matrix6 = new Matrix(doubles1);
+        Matrix matrix5 = new Matrix(doubles1);
         double[] doubles5 = {2, -3, 5};
         Vector vector = new Vector(doubles5);
-        System.out.println("Матрица до умножения на вектор: " + matrix6);
-        System.out.println("Матрица после умножения на вектор: " + matrix6.multiplyByVector(vector));
+        System.out.println("Матрица до умножения на вектор: " + matrix5);
+        System.out.println("Матрица после умножения на вектор: " + matrix5.multiplyByVector(vector));
         System.out.println();
 
 
         double[][] doubles6 = {{1, 2, 5, 32}, {7, 5, 6, 12}, {7, 20, 9, 10}, {1, 2, 3, 4}};
-        Matrix matrix5 = new Matrix(doubles6);
-        System.out.println("Определитель матрицы = " + matrix5.getDeterminant());
+        Matrix matrix6 = new Matrix(doubles6);
+        System.out.println("Определитель матрицы = " + matrix6.getDeterminant());
         System.out.println();
 
         double[][] doubles7 = {{1, 2}, {4, 5, 6}};
