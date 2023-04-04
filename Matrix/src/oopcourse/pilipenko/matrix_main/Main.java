@@ -53,7 +53,6 @@ public class Main {
         System.out.println("Матрица после умножения на вектор: " + matrix5.multiplyByVector(vector));
         System.out.println();
 
-
         double[][] doubles6 = {{1, 2, 5, 32}, {7, 5, 6, 12}, {7, 20, 9, 10}, {1, 2, 3, 4}};
         Matrix matrix6 = new Matrix(doubles6);
         System.out.println("Определитель матрицы = " + matrix6.getDeterminant());
