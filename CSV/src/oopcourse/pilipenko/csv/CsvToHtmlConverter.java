@@ -28,7 +28,6 @@ public class CsvToHtmlConverter {
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден");
         }
-
     }
 
     private static void parseCsvLine(String line, FileWriter fileWriter) throws IOException {
