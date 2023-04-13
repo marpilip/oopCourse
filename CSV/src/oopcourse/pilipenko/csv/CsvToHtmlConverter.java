@@ -33,6 +33,7 @@ public class CsvToHtmlConverter {
     private static void parseCsvLine(String line, FileWriter fileWriter) throws IOException {
         int cellStartIndex = 0;
         boolean isQuotes = false;
+        boolean isNextLine = false;
 
         for (int i = 0; i <= line.length(); i++) {
             char currentChar;
@@ -45,8 +46,20 @@ public class CsvToHtmlConverter {
 
             if (currentChar == '\"') {
                 isQuotes = !isQuotes;
-            } else if (currentChar == ',' && !isQuotes) {
+            }
+
+            if (currentChar == '\n' && isQuotes) {
+                isNextLine = true;
+                continue;
+            }
+
+            if (currentChar == ',' && !isQuotes) {
                 String cell = line.substring(cellStartIndex, i);
+
+                if (isNextLine) { // добавляем перенос строки для продолжающейся ячейки
+                    fileWriter.write("<br>");
+                    isNextLine = false;
+                }
 
                 if (cell.startsWith("\"") && cell.endsWith("\"")) {
                     cell = cell.replaceAll("\"{2}", "\"");
