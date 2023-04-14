@@ -18,18 +18,18 @@ public class Main {
 
         System.out.println("Linked list head = " + linkedList.getHead());
 
-        System.out.println("Удаление первого узла: = " + linkedList.removeFirst() + " Linked list: " + linkedList.getHead());
+        System.out.println("Удаление первого узла = " + linkedList.removeFirst() + "; Linked list: " + linkedList.getHead());
 
-        System.out.println("Удаление узла под индексом 2 = " + linkedList.removeItem(2) + " Linked list: " + linkedList);
+        System.out.println("Удаление узла под индексом 2 = " + linkedList.removeItem(2) + "; Linked list: " + linkedList);
 
         System.out.println("Элемент узла под индексом 1 = " + linkedList.getItem(1));
 
-        linkedList.replaceItem(1, 14);
-        System.out.println("Linked list после замены элемента узла под индексом 1 = " + linkedList);
+        System.out.println("Замена элемента узла под индексом 1 = " + linkedList.replaceItem(1, 14)
+                + "; Linked list: " + linkedList);
 
         System.out.println("Попытка удалить элемент 13: " + linkedList.deleteItem(13));
 
-        System.out.println("Копия Linked list : " + linkedList.copy());
+        System.out.println("Копия Linked list: " + linkedList.copy());
 
         linkedList.reverse();
         System.out.println("Разворот Linked list: " + linkedList);
