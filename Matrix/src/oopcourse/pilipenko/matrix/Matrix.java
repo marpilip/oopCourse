@@ -31,8 +31,19 @@ public class Matrix {
 
     public Matrix(double[][] components) {
         if (components.length == 0 || components[0].length == 0) {
-            throw new IllegalArgumentException("Количество строк и столбцов должно быть больше 0. Количество строк = " + components.length +
-                    ". Количество столбцов = " + components[0].length);
+            throw new IllegalArgumentException("Количество строк должно быть больше 0. Количество строк = " + components.length);
+        }
+
+        int columnsCount = 0;
+
+        for (double[] component : components) {
+            if (component.length == 0) {
+                columnsCount++;
+            }
+        }
+
+        if (columnsCount == components.length){
+            throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Количество столбцов = " + components[0].length);
         }
 
         int rowsCount = components.length;
@@ -50,26 +61,25 @@ public class Matrix {
         }
     }
 
-    public Matrix(Vector[] vectors) {
-        if (vectors.length == 0) {
+    public Matrix(Vector[] rows) {
+        if (rows.length == 0) {
             throw new IllegalArgumentException("Количество строк не может быть = 0");
         }
 
         int maxVectorSize = 0;
 
-        for (Vector vector : vectors) {
+        for (Vector vector : rows) {
             if (vector.getSize() > maxVectorSize) {
                 maxVectorSize = vector.getSize();
             }
         }
 
-        rows = new Vector[vectors.length];
-        Vector vector = new Vector(maxVectorSize);
-        Vector[] copiedVectors = Arrays.copyOf(vectors, vectors.length);
+        this.rows = new Vector[rows.length];
 
-        for (int i = 0; i < vectors.length; i++) {
-            copiedVectors[i].add(vector);
-            rows[i] = new Vector(copiedVectors[i]);
+        for (int i = 0; i < rows.length; i++) {
+            Vector vector = new Vector(maxVectorSize);
+            vector.add(rows[i]);
+            this.rows[i] = vector;
         }
     }
 
@@ -108,7 +118,7 @@ public class Matrix {
         }
 
         if (vector.getSize() != getColumnsCount()) {
-            throw new IllegalArgumentException("Количество столбцов не равно размерности вектора. Размер вектора = "
+            throw new IllegalArgumentException("Размерность вектора не равна количеству столбцов. Размер вектора = "
                     + vector.getSize() + ". Количество столбцов = " + getColumnsCount());
         }
 
