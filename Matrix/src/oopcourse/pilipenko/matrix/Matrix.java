@@ -2,8 +2,6 @@ package oopcourse.pilipenko.matrix;
 
 import oopcourse.pilipenko.vector.Vector;
 
-import java.util.Arrays;
-
 public class Matrix {
     private Vector[] rows;
 
