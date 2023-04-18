@@ -40,7 +40,7 @@ public class Matrix {
             }
         }
 
-        if (columnsCount == components.length){
+        if (columnsCount == components.length) {
             throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Количество столбцов = " + components[0].length);
         }
 
