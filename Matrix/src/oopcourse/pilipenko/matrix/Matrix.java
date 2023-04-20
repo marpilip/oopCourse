@@ -31,21 +31,7 @@ public class Matrix {
         if (components.length == 0) {
             throw new IllegalArgumentException("Количество строк должно быть больше 0. Количество строк = " + components.length);
         }
-
-        int columnsCount = 0;
-
-        for (double[] component : components) {
-            if (component.length == 0) {
-                columnsCount++;
-            }
-        }
-
-        if (columnsCount == components.length) {
-            throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Количество столбцов = " + components[0].length);
-        }
-
-        int rowsCount = components.length;
-        rows = new Vector[rowsCount];
+        
         int maxLength = 0;
 
         for (double[] row : components) {
@@ -53,6 +39,13 @@ public class Matrix {
                 maxLength = row.length;
             }
         }
+
+        if (maxLength == 0) {
+            throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Количество столбцов = " + components[0].length);
+        }
+
+        int rowsCount = components.length;
+        rows = new Vector[rowsCount];
 
         for (int i = 0; i < rowsCount; i++) {
             rows[i] = new Vector(maxLength, components[i]);

@@ -7,6 +7,10 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+        double[][] doubles = new double[2][1];
+        System.out.println(Arrays.toString(doubles));
+        Matrix matrix = new Matrix(doubles);
+        System.out.println(matrix);
         Matrix matrix1 = new Matrix(4, 5);
         System.out.println(matrix1);
 
