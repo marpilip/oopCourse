@@ -31,7 +31,7 @@ public class Matrix {
         if (components.length == 0) {
             throw new IllegalArgumentException("Количество строк должно быть больше 0. Количество строк = " + components.length);
         }
-        
+
         int maxLength = 0;
 
         for (double[] row : components) {
