@@ -28,7 +28,7 @@ public class Matrix {
     }
 
     public Matrix(double[][] components) {
-        if (components.length == 0 || components[0].length == 0) {
+        if (components.length == 0) {
             throw new IllegalArgumentException("Количество строк должно быть больше 0. Количество строк = " + components.length);
         }
 
