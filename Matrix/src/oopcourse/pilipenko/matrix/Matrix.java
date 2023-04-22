@@ -41,7 +41,7 @@ public class Matrix {
         }
 
         if (maxLength == 0) {
-            throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Количество столбцов = " + components[0].length);
+            throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Количество столбцов = " + maxLength);
         }
 
         int rowsCount = components.length;

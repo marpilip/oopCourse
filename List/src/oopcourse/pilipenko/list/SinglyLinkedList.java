@@ -1,19 +1,17 @@
 package oopcourse.pilipenko.list;
 
-import oopcourse.pilipenko.list_node.ListItem;
+import java.util.NoSuchElementException;
 
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
     private int size;
 
     public SinglyLinkedList() {
-        head = null;
-        size = 0;
     }
 
-    public T getHead() {
+    public T getFirst() {
         if (head == null) {
-            throw new IllegalArgumentException("Список пустой");
+            throw new NoSuchElementException("Список пустой");
         }
 
         return head.getData();
@@ -23,111 +21,115 @@ public class SinglyLinkedList<T> {
         return size;
     }
 
-    public T getItem(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Индекс должен быть больше или равен 0 и меньше размера = " + size
-                    + ". Индекс = " + index);
-        }
+    public T get(int index) {
+        checkIndex(index);
 
-        ListItem<T> current = head;
+        ListItem<T> item = head;
 
         for (int i = 0; i < index; i++) {
-            current = current.getNext();
+            item = item.getNext();
         }
 
-        return current.getData();
+        return item.getData();
     }
 
-    public T replaceItem(int index, T item) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Индекс должен быть больше или равен 0 и меньше размера = " + size
-                    + ". Индекс = " + index);
-        }
+    public T set(int index, T data) {
+        checkIndex(index);
 
-        ListItem<T> current = head;
+        ListItem<T> currentItem = head;
 
         for (int i = 0; i < index; i++) {
-            current = current.getNext();
+            currentItem = currentItem.getNext();
         }
 
-        T oldData = current.getData();
-        current.setData(item);
+        T oldData = currentItem.getData();
+        currentItem.setData(data);
 
         return oldData;
     }
 
-    public T removeItem(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Индекс должен быть больше или равен 0 и меньше размера = " + size
-                    + ". Индекс = " + index);
-        }
+    public T removeByIndex(int index) {
+        checkIndex(index);
 
-        T removedItem;
+        T removedData;
 
         if (index == 0) {
-            removedItem = head.getData();
-            head = head.getNext();
-        } else {
-            ListItem<T> current = head;
-
-            for (int i = 0; i < index - 1; i++) {
-                current = current.getNext();
-            }
-
-            removedItem = current.getData();
-            current.setNext(current.getNext().getNext());
+            return removeFirst();
         }
 
+        ListItem<T> item = head;
+
+        for (int i = 0; i < index - 1; i++) {
+            item = item.getNext();
+        }
+
+        removedData = item.getNext().getData();
+        item.setNext(item.getNext().getNext());
+
         size--;
-        return removedItem;
+        return removedData;
     }
 
-    public void addFirst(T item) {
-        head = new ListItem<>(item, head);
+    public void addFirst(T data) {
+        head = new ListItem<>(data, head);
         size++;
     }
 
-    public void addItem(int index, T item) {
+    public void add(int index, T data) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Индекс должен быть больше или равен 0 и меньше размера = " + size
+            throw new IndexOutOfBoundsException("Индекс должен быть больше 0 и меньше размера = " + size
                     + ". Индекс = " + index);
         }
 
         if (index == 0) {
-            addFirst(item);
-        } else {
-            ListItem<T> current = head;
-
-            for (int i = 0; i < index - 1; i++) {
-                current = current.getNext();
-            }
-
-            current.setNext(new ListItem<>(item, current.getNext()));
-            size++;
+            addFirst(data);
+            return;
         }
+
+        ListItem<T> currentItem = head;
+
+        for (int i = 0; i < index - 1; i++) {
+            currentItem = currentItem.getNext();
+        }
+
+        currentItem.setNext(new ListItem<>(data, currentItem.getNext()));
+        size++;
+
     }
 
-    public boolean deleteItem(T item) {
+    public boolean removeByValue(T data) {
         if (head == null) {
             return false;
         }
 
-        if (head.getData().equals(item)) {
+        if (data == null && head.getData() == null) {
             head = head.getNext();
             size--;
             return true;
         }
 
-        ListItem<T> current = head;
+        if (head.getData().equals(data)) {
+            head = head.getNext();
+            size--;
+            return true;
+        }
 
-        while (current.getNext() != null) {
-            if (current.getNext().getData().equals(item)) {
-                current.setNext(current.getNext().getNext());
+        ListItem<T> currentItem = head;
+
+        while (currentItem.getNext() != null) {
+            if (currentItem.getNext().getData().equals(data)) {
+                currentItem.setNext(currentItem.getNext().getNext());
                 size--;
                 return true;
             }
 
-            current = current.getNext();
+            if (data == null && currentItem.getNext().getData() == null) {
+                currentItem.setNext(currentItem.getNext().getNext());
+                size--;
+                return true;
+            }
+
+            currentItem = currentItem.getNext();
         }
 
         return false;
@@ -135,7 +137,7 @@ public class SinglyLinkedList<T> {
 
     public T removeFirst() {
         if (head == null) {
-            throw new IllegalArgumentException("Лист пустой");
+            throw new NoSuchElementException("Лист пустой");
         }
 
         T removedData = head.getData();
@@ -147,41 +149,53 @@ public class SinglyLinkedList<T> {
 
     public SinglyLinkedList<T> copy() {
         SinglyLinkedList<T> copy = new SinglyLinkedList<>();
-        ListItem<T> current = head;
+        ListItem<T> currentItem = head;
 
-        for (int i = 0; i < size; i++) {
-            copy.addItem(i, current.getData());
-            current = current.getNext();
+        while (currentItem != null) {
+            copy.addFirst(currentItem.getData());
+            currentItem = currentItem.getNext();
         }
 
         return copy;
     }
 
     public void reverse() {
-        ListItem<T> previous = null;
-        ListItem<T> current = head;
+        ListItem<T> previousItem = null;
+        ListItem<T> currentItem = head;
 
-        while (current != null) {
-            ListItem<T> next = current.getNext();
-            current.setNext(previous);
-            previous = current;
-            current = next;
+        while (currentItem != null) {
+            ListItem<T> nextItem = currentItem.getNext();
+            currentItem.setNext(previousItem);
+            previousItem = currentItem;
+            currentItem = nextItem;
         }
 
-        head = previous;
+        head = previousItem;
     }
 
+    @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[");
-        ListItem<T> current = head;
+        if (size == 0) {
+            return "[]";
+        }
 
-        while (current != null) {
-            stringBuilder.append(current.getData()).append(", ");
-            current = current.getNext();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append('[');
+        ListItem<T> item = head;
+
+        while (item != null) {
+            stringBuilder.append(item.getData()).append(", ");
+            item = item.getNext();
         }
 
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        return stringBuilder.append("]").toString();
+        return stringBuilder.append(']').toString();
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Индекс должен быть больше или равен 0 и меньше размера = " + size
+                    + ". Индекс = " + index);
+        }
     }
 }
