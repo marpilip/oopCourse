@@ -9,20 +9,20 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        ArrayList<String> strings = new ArrayList<>();
+        ArrayList<String> lines = new ArrayList<>();
         String filePath = "D:\\Java IT\\table.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                strings.add(line);
+                lines.add(line);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден");
         }
 
-        System.out.println("ArrayList из файла: " + strings);
+        System.out.println("ArrayList из файла: " + lines);
 
         ArrayList<Integer> integers1 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
         ArrayList<Integer> integers2 = new ArrayList<>(Arrays.asList(0, 0, 2, 32, 4, 4, 4, 7));
@@ -32,10 +32,14 @@ public class Main {
         System.out.println("ArrayList после удаления четных чисел: " + integers1);
 
         System.out.println("ArrayList: " + integers2);
-        System.out.println("ArrayList без дубликатов: " + getWithoutDuplicateNumbers(integers2));
+        System.out.println("ArrayList без дубликатов: " + getIntegersWithoutDuplicates(integers2));
     }
 
     public static void deleteEvenNumbers(ArrayList<Integer> integers) {
+        if (integers == null) {
+            throw new NullPointerException("Переданный ArrayList пустой");
+        }
+
         for (int i = 0; i < integers.size(); i++) {
             if (integers.get(i) % 2 == 0) {
                 integers.remove(i);
@@ -44,15 +48,19 @@ public class Main {
         }
     }
 
-    public static ArrayList<Integer> getWithoutDuplicateNumbers(ArrayList<Integer> integers) {
-        ArrayList<Integer> integersWithoutDuplicateNumbers = new ArrayList<>(integers.size());
+    public static ArrayList<Integer> getIntegersWithoutDuplicates(ArrayList<Integer> integers) {
+        if (integers == null) {
+            throw new NullPointerException("Переданный ArrayList пустой");
+        }
 
-        for (Integer number : integers) {
-            if (!integersWithoutDuplicateNumbers.contains(number)) {
-                integersWithoutDuplicateNumbers.add(number);
+        ArrayList<Integer> integersWithoutDuplicates = new ArrayList<>(integers.size());
+
+        for (Integer integer : integers) {
+            if (!integersWithoutDuplicates.contains(integer)) {
+                integersWithoutDuplicates.add(integer);
             }
         }
 
-        return integersWithoutDuplicateNumbers;
+        return integersWithoutDuplicates;
     }
 }
