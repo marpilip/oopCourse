@@ -2,15 +2,17 @@ package oopcourse.pilipenko.arraylist_main;
 
 import oopcourse.pilipenko.arraylist.ArrayList;
 
+import java.util.HashSet;
+
 public class Main {
     public static void main(String[] args) {
         ArrayList<String> strings1 = new ArrayList<>();
         System.out.println("ArrayList после добавления элементов: " + strings1);
         strings1.add("a");
-        System.out.println("ArrayList после добавления элементов: " + strings1);
         strings1.add("b");
         strings1.add("c");
         strings1.add("d");
+        strings1.add(1, "1");
         System.out.println("ArrayList после добавления элементов: " + strings1);
 
         System.out.println("Размер ArrayList = " + strings1.size());
