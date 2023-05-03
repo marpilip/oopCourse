@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ArrayList<String> lines = new ArrayList<>();
         String filePath = "D:\\Java IT\\table.txt";
 
@@ -20,6 +20,8 @@ public class Main {
             }
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден");
+        } catch (IOException e) {
+            System.out.println("Ошибка чтения файла");
         }
 
         System.out.println("ArrayList из файла: " + lines);
@@ -28,11 +30,23 @@ public class Main {
         ArrayList<Integer> integers2 = new ArrayList<>(Arrays.asList(0, 0, 2, 32, 4, 4, 4, 7));
 
         System.out.println("ArrayList: " + integers1);
-        deleteEvenNumbers(integers1);
+
+        try {
+            deleteEvenNumbers(integers1);
+        } catch (NullPointerException e) {
+            System.out.println("Переданный ArrayList пустой");
+            return;
+        }
+
         System.out.println("ArrayList после удаления четных чисел: " + integers1);
 
         System.out.println("ArrayList: " + integers2);
-        System.out.println("ArrayList без дубликатов: " + getIntegersWithoutDuplicates(integers2));
+
+        try {
+            System.out.println("ArrayList без дубликатов: " + getIntegersWithoutDuplicates(integers2));
+        } catch (NullPointerException e) {
+            System.out.println("Переданный ArrayList пустой");
+        }
     }
 
     public static void deleteEvenNumbers(ArrayList<Integer> integers) {
