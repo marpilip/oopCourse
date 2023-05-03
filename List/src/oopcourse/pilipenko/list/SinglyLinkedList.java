@@ -1,6 +1,7 @@
 package oopcourse.pilipenko.list;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
@@ -21,26 +22,26 @@ public class SinglyLinkedList<T> {
         return size;
     }
 
-    public T get(int index) {
-        checkIndex(index);
-
+    private ListItem<T> getItemByIndex(int index) {
         ListItem<T> item = head;
 
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < index - 1; i++) {
             item = item.getNext();
         }
 
-        return item.getData();
+        return item;
+    }
+
+    public T get(int index) {
+        checkIndex(index);
+
+        return getItemByIndex(index + 1).getData();
     }
 
     public T set(int index, T data) {
         checkIndex(index);
 
-        ListItem<T> currentItem = head;
-
-        for (int i = 0; i < index; i++) {
-            currentItem = currentItem.getNext();
-        }
+        ListItem<T> currentItem = getItemByIndex(index + 1);
 
         T oldData = currentItem.getData();
         currentItem.setData(data);
@@ -51,19 +52,13 @@ public class SinglyLinkedList<T> {
     public T removeByIndex(int index) {
         checkIndex(index);
 
-        T removedData;
-
         if (index == 0) {
             return removeFirst();
         }
 
-        ListItem<T> item = head;
+        ListItem<T> item = getItemByIndex(index);
 
-        for (int i = 0; i < index - 1; i++) {
-            item = item.getNext();
-        }
-
-        removedData = item.getNext().getData();
+        T removedData = item.getNext().getData();
         item.setNext(item.getNext().getNext());
 
         size--;
@@ -77,7 +72,7 @@ public class SinglyLinkedList<T> {
 
     public void add(int index, T data) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Индекс должен быть больше 0 и меньше размера = " + size
+            throw new IndexOutOfBoundsException("Индекс должен быть больше либо = 0 и меньше размера = " + size
                     + ". Индекс = " + index);
         }
 
@@ -86,29 +81,18 @@ public class SinglyLinkedList<T> {
             return;
         }
 
-        ListItem<T> currentItem = head;
-
-        for (int i = 0; i < index - 1; i++) {
-            currentItem = currentItem.getNext();
-        }
+        ListItem<T> currentItem = getItemByIndex(index);
 
         currentItem.setNext(new ListItem<>(data, currentItem.getNext()));
         size++;
-
     }
 
-    public boolean removeByValue(T data) {
+    public boolean removeByData(T data) {
         if (head == null) {
             return false;
         }
 
-        if (data == null && head.getData() == null) {
-            head = head.getNext();
-            size--;
-            return true;
-        }
-
-        if (head.getData().equals(data)) {
+        if (Objects.equals(data, head.getData())) {
             head = head.getNext();
             size--;
             return true;
@@ -117,13 +101,7 @@ public class SinglyLinkedList<T> {
         ListItem<T> currentItem = head;
 
         while (currentItem.getNext() != null) {
-            if (currentItem.getNext().getData().equals(data)) {
-                currentItem.setNext(currentItem.getNext().getNext());
-                size--;
-                return true;
-            }
-
-            if (data == null && currentItem.getNext().getData() == null) {
+            if (Objects.equals(currentItem.getNext().getData(), data)) {
                 currentItem.setNext(currentItem.getNext().getNext());
                 size--;
                 return true;
@@ -149,11 +127,11 @@ public class SinglyLinkedList<T> {
 
     public SinglyLinkedList<T> copy() {
         SinglyLinkedList<T> copy = new SinglyLinkedList<>();
-        ListItem<T> currentItem = head;
+        int capacity = size;
 
-        while (currentItem != null) {
-            copy.addFirst(currentItem.getData());
-            currentItem = currentItem.getNext();
+        while (size > copy.getSize()) {
+            copy.addFirst(getItemByIndex(capacity).getData());
+            capacity--;
         }
 
         return copy;

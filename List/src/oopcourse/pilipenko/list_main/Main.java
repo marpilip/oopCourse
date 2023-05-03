@@ -4,38 +4,39 @@ import oopcourse.pilipenko.list.SinglyLinkedList;
 
 public class Main {
     public static void main(String[] args) {
-        SinglyLinkedList<Integer> linkedList = new SinglyLinkedList<>();
-        linkedList.add(0, 31);
-        linkedList.add(1, 32);
-        linkedList.add(2, 11);
-        linkedList.add(3, 35);
-        System.out.println("Linked list после заполнения узлами: " + linkedList);
+        SinglyLinkedList<Integer> linkedList1 = new SinglyLinkedList<>();
+        linkedList1.add(0, 31);
+        linkedList1.add(1, 32);
+        linkedList1.add(2, 11);
+        linkedList1.add(3, 35);
+        System.out.println("Linked linkedList1 после заполнения узлами: " + linkedList1);
 
-        linkedList.addFirst(10);
-        System.out.println("Linked list после добавления узла вперед: " + linkedList);
+        linkedList1.addFirst(10);
+        System.out.println("Linked linkedList1 после добавления узла вперед: " + linkedList1);
 
-        System.out.println("Linked list size = " + linkedList.getSize());
+        System.out.println("Linked linkedList1 size = " + linkedList1.getSize());
 
-        System.out.println("Linked list head = " + linkedList.getFirst());
+        System.out.println("Linked linkedList1 head = " + linkedList1.getFirst());
 
-        System.out.println("Удаление первого узла = " + linkedList.removeFirst() + "; Linked list head = " + linkedList.getFirst());
-        System.out.println("Linked list: " + linkedList);
+        System.out.println("Удаление первого узла = " + linkedList1.removeFirst() + "; Linked linkedList1 head = " + linkedList1.getFirst());
+        System.out.println("Linked linkedList1: " + linkedList1);
 
-        System.out.println("Удаление узла под индексом 2 = " + linkedList.removeByIndex(2) + "; Linked list: " + linkedList);
+        System.out.println("Удаление узла под индексом 2 = " + linkedList1.removeByIndex(2) + "; Linked linkedList1: " + linkedList1);
 
-        System.out.println("Элемент узла под индексом 1 = " + linkedList.get(1));
+        System.out.println("Элемент узла под индексом 1 = " + linkedList1.get(1));
 
-        System.out.println("Замена элемента узла под индексом 1 = " + linkedList.set(1, 14)
-                + "; Linked list: " + linkedList);
+        System.out.println("Замена элемента узла под индексом 1 = " + linkedList1.set(1, 14)
+                + "; Linked linkedList1: " + linkedList1);
 
-        System.out.println("Попытка удалить элемент 13: " + linkedList.removeByValue(13));
+        System.out.println("Попытка удалить элемент 13: " + linkedList1.removeByData(13));
 
-        System.out.println("Копия Linked list: " + linkedList.copy());
+        System.out.println("LinkedList1: " + linkedList1);
+        System.out.println("Копия Linked linkedList1: " + linkedList1.copy());
 
-        linkedList.reverse();
-        System.out.println("Разворот Linked list: " + linkedList);
+        linkedList1.reverse();
+        System.out.println("Разворот Linked linkedList1: " + linkedList1);
 
-        SinglyLinkedList<String> list = new SinglyLinkedList<>();
-        System.out.println(list);
+        SinglyLinkedList<String> linkedList2 = new SinglyLinkedList<>();
+        System.out.println(linkedList2);
     }
 }
