@@ -1,6 +1,6 @@
-package oopcourse.pilipenko.hashtable_main;
+package oopcourse.pilipenko.hash_table_main;
 
-import oopcourse.pilipenko.hashtable.HashTable;
+import oopcourse.pilipenko.hash_table.HashTable;
 
 import java.util.ArrayList;
 
