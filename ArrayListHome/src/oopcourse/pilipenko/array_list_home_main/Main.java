@@ -31,15 +31,10 @@ public class Main {
 
         System.out.println("ArrayList: " + integers1);
 
-
         deleteEvenNumbers(integers1);
-
-
         System.out.println("ArrayList после удаления четных чисел: " + integers1);
 
         System.out.println("ArrayList: " + integers2);
-
-
         System.out.println("ArrayList без дубликатов: " + getIntegersWithoutDuplicates(integers2));
     }
 
