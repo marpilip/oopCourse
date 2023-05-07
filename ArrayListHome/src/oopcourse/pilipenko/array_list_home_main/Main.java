@@ -31,40 +31,39 @@ public class Main {
 
         System.out.println("ArrayList: " + integers1);
 
-        try {
-            deleteEvenNumbers(integers1);
-        } catch (NullPointerException e) {
-            System.out.println("Переданный ArrayList пустой");
-            return;
-        }
+
+        deleteEvenNumbers(integers1);
+
 
         System.out.println("ArrayList после удаления четных чисел: " + integers1);
 
         System.out.println("ArrayList: " + integers2);
 
-        try {
-            System.out.println("ArrayList без дубликатов: " + getIntegersWithoutDuplicates(integers2));
-        } catch (NullPointerException e) {
-            System.out.println("Переданный ArrayList пустой");
-        }
+
+        System.out.println("ArrayList без дубликатов: " + getIntegersWithoutDuplicates(integers2));
     }
 
     public static void deleteEvenNumbers(ArrayList<Integer> integers) {
         if (integers == null) {
-            throw new NullPointerException("Переданный ArrayList пустой");
+            throw new NullPointerException("Список не может быть null");
         }
 
         for (int i = 0; i < integers.size(); i++) {
             if (integers.get(i) % 2 == 0) {
-                integers.remove(i);
-                i--;
+
+                try {
+                    integers.remove(i);
+                    i--;
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Ошибка удаления элемента: " + e.getMessage());
+                }
             }
         }
     }
 
     public static ArrayList<Integer> getIntegersWithoutDuplicates(ArrayList<Integer> integers) {
         if (integers == null) {
-            throw new NullPointerException("Переданный ArrayList пустой");
+            throw new NullPointerException("Список не может быть null");
         }
 
         ArrayList<Integer> integersWithoutDuplicates = new ArrayList<>(integers.size());
