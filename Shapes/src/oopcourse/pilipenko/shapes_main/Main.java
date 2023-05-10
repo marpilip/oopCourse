@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         Shape[] shapes = {
-                new Rectangle(1, 30),
+                new Rectangle(100, 300),
                 new Rectangle(10, 3),
                 new Circle(4),
                 new Circle(1),
