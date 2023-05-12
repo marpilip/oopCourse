@@ -25,7 +25,7 @@ public class SinglyLinkedList<T> {
     private ListItem<T> getItemByIndex(int index) {
         ListItem<T> item = head;
 
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 0; i < index; i++) {
             item = item.getNext();
         }
 
@@ -35,13 +35,13 @@ public class SinglyLinkedList<T> {
     public T get(int index) {
         checkIndex(index);
 
-        return getItemByIndex(index + 1).getData();
+        return getItemByIndex(index).getData();
     }
 
     public T set(int index, T data) {
         checkIndex(index);
 
-        ListItem<T> currentItem = getItemByIndex(index + 1);
+        ListItem<T> currentItem = getItemByIndex(index);
 
         T oldData = currentItem.getData();
         currentItem.setData(data);
@@ -72,7 +72,7 @@ public class SinglyLinkedList<T> {
 
     public void add(int index, T data) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Индекс должен быть больше либо = 0 и меньше размера = " + size
+            throw new IndexOutOfBoundsException("Индекс должен быть больше либо = 0 и меньше либо равен размера = " + size
                     + ". Индекс = " + index);
         }
 
@@ -81,9 +81,10 @@ public class SinglyLinkedList<T> {
             return;
         }
 
-        ListItem<T> currentItem = getItemByIndex(index);
+        ListItem<T> previousItem = getItemByIndex(index - 1);
+        ListItem<T> currentItem = previousItem.getNext();
 
-        currentItem.setNext(new ListItem<>(data, currentItem.getNext()));
+        previousItem.setNext(new ListItem<>(data, currentItem));
         size++;
     }
 
@@ -115,7 +116,7 @@ public class SinglyLinkedList<T> {
 
     public T removeFirst() {
         if (head == null) {
-            throw new NoSuchElementException("Лист пустой");
+            throw new NoSuchElementException("Список пустой");
         }
 
         T removedData = head.getData();
@@ -127,11 +128,25 @@ public class SinglyLinkedList<T> {
 
     public SinglyLinkedList<T> copy() {
         SinglyLinkedList<T> copy = new SinglyLinkedList<>();
-        int capacity = size;
+        ListItem<T> currentItem = head;
 
-        while (size > copy.getSize()) {
-            copy.addFirst(getItemByIndex(capacity).getData());
-            capacity--;
+        while (currentItem != null) {
+            ListItem<T> newItem = new ListItem<>(currentItem.getData());
+
+            if (copy.head == null){
+                copy.head = newItem;
+            } else {
+                ListItem<T> lastItem = copy.head;
+
+                while (lastItem.getNext()!=null){
+                    lastItem = lastItem.getNext();
+                }
+
+                lastItem.setNext(newItem);
+
+            }
+            copy.size ++;
+            currentItem = currentItem.getNext();
         }
 
         return copy;
