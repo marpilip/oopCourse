@@ -6,13 +6,11 @@ public class ArrayList<E> implements List<E> {
     private static final int DEFAULT_CAPACITY = 10;
 
     private E[] elements;
-    private int capacity;
     private int elementsCount;
     private int changeCount;
 
     public ArrayList() {
         elements = (E[]) new Object[DEFAULT_CAPACITY];
-        capacity = DEFAULT_CAPACITY;
     }
 
     public int getChangeCount() {
@@ -25,13 +23,11 @@ public class ArrayList<E> implements List<E> {
         }
 
         elements = (E[]) new Object[capacity];
-        this.capacity = capacity;
     }
 
     public void increaseCapacity(int capacity) {
-        if (capacity > this.capacity) {
+        if (capacity > elements.length) {
             elements = Arrays.copyOf(elements, capacity);
-            this.capacity = capacity;
         }
     }
 
@@ -40,23 +36,18 @@ public class ArrayList<E> implements List<E> {
             increaseCapacity(DEFAULT_CAPACITY);
         }
 
-        increaseCapacity(capacity * 2);
+        increaseCapacity(elements.length * 2);
     }
 
     public void trimToSize() {
-        if (elementsCount < capacity) {
-            elements = Arrays.copyOf(elements, capacity);
-            capacity = elementsCount;
+        if (elementsCount < elements.length) {
+            elements = Arrays.copyOf(elements, elements.length);
         }
     }
 
     @Override
     public int size() {
         return elementsCount;
-    }
-
-    public int getCapacity() {
-        return capacity;
     }
 
     @Override
@@ -111,10 +102,10 @@ public class ArrayList<E> implements List<E> {
         }
 
         // noinspection SuspiciousSystemArraycopy
-        System.arraycopy(elements, 0, a, 0, capacity);
+        System.arraycopy(elements, 0, a, 0, elements.length);
 
-        if (a.length > capacity) {
-            a[capacity] = null;
+        if (a.length > elements.length) {
+            a[elements.length] = null;
         }
 
         return a;
@@ -165,7 +156,7 @@ public class ArrayList<E> implements List<E> {
             return false;
         }
 
-        increaseCapacity(capacity + c.size());
+        increaseCapacity(elements.length + c.size());
 
         if (elementsCount == index) {
             for (E element : c) {
@@ -265,7 +256,7 @@ public class ArrayList<E> implements List<E> {
     public void add(int index, E element) {
         checkIndex(index);
 
-        if (capacity <= elementsCount) {
+        if (elements.length <= elementsCount) {
             increaseCapacity();
         }
 
@@ -298,9 +289,9 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index >= capacity) {
+        if (index < 0 || index >= elements.length) {
             throw new IndexOutOfBoundsException("Индекс должен быть >= 0 и < вместимости ArrayList. Индекс = " + index
-                    + ". Вместимость ArrayList = " + capacity);
+                    + ". Вместимость ArrayList = " + elements.length);
         }
     }
 
