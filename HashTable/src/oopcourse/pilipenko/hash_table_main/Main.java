@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        HashTable<Integer> hashTable = new HashTable<>();
+        HashTable<Integer> hashTable = new HashTable<>(10);
 
         hashTable.add(1);
         hashTable.add(2);
