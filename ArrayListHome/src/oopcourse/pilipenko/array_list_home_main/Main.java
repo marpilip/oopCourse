@@ -45,13 +45,8 @@ public class Main {
 
         for (int i = 0; i < integers.size(); i++) {
             if (integers.get(i) % 2 == 0) {
-
-                try {
-                    integers.remove(i);
-                    i--;
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Ошибка удаления элемента: " + e.getMessage());
-                }
+                integers.remove(i);
+                i--;
             }
         }
     }
