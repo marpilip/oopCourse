@@ -1,7 +1,10 @@
 package oopcourse.pilipenko.temperature_main;
 
+import oopcourse.pilipenko.temperature.TemperatureConverterGUI;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        TemperatureConverterGUI temperatureConverterGUI = new TemperatureConverterGUI();
+        temperatureConverterGUI.setVisible(true);
     }
 }
