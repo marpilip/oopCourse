@@ -10,9 +10,13 @@ public class Main {
 
         hashTable.add(1);
         hashTable.add(2);
+        System.out.println("Hash Table после добавления элементов: " + hashTable);
+
         hashTable.add(123);
         hashTable.add(23010);
         hashTable.add(12333);
+        System.out.println("Hash Table после добавления элементов: " + hashTable);
+
         hashTable.add(1);
         hashTable.add(5684);
         hashTable.add(14);
