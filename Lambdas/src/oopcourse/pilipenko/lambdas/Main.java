@@ -1,6 +1,4 @@
-package oopcourse.pilipenko.lambdas_main;
-
-import oopcourse.pilipenko.lambdas.Person;
+package oopcourse.pilipenko.lambdas;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,7 +8,7 @@ import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-        List<Person> personList = Arrays.asList(
+        List<Person> personsList = Arrays.asList(
                 new Person("Stepan", 56),
                 new Person("Makar", 32),
                 new Person("Olga", 12),
@@ -24,55 +22,71 @@ public class Main {
                 new Person("Makar", 10)
         );
 
-        printUniqueNames(personList);
-        System.out.println(getPeopleYoungerThan18(personList));
-        System.out.println(getMap(personList));
-        printPeopleFrom20To45(personList);
+        List<String> uniqueNames = getUniqueNames(personsList);
+        System.out.println("Список уникальных имен: " + uniqueNames);
+
+        printUniqueNames(personsList);
+        System.out.println(getPeopleYoungerThan18(personsList));
+        System.out.println(getMap(personsList));
+        printPeopleFrom20To45(personsList);
 
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("Введите число до которого вывести корни чисел:");
         int numbersCount = scanner.nextInt();
+
         printNumbersRoots(numbersCount);
 
         System.out.println("Введите количество чисел Фибоначчи:");
         int fibonacciNumbersCount = scanner.nextInt();
+
         printFibonacciNumbers(fibonacciNumbersCount);
     }
 
-    public static void printUniqueNames(List<Person> personList) {
-        String names = personList.stream()
-                .map(Person::name)
-                .distinct()
-                .collect(Collectors.joining(", "));
+    public static void printUniqueNames(List<Person> personsList) {
+        String names = getUniqueNames(personsList).stream()
+                .collect(Collectors.joining(", ", "Имена: ", "."));
 
-        System.out.println("Имена: " + names);
+        System.out.println(names);
     }
 
+    public static List<String> getUniqueNames(List<Person> personsList) {
+        return personsList.stream()
+                .map(Person::name)
+                .distinct()
+                .collect(Collectors.toList());
+    }
 
-    public static List<Person> getPeopleYoungerThan18(List<Person> personList) {
-        List<Person> peopleYoungerThan18 = personList.stream()
-                .filter(x -> x.age() < 18)
+    public static List<Person> getPeopleYoungerThan18(List<Person> personsList) {
+        List<Person> peopleYoungerThan18 = personsList.stream()
+                .filter(p -> p.age() < 18)
                 .toList();
 
         double averageAge = peopleYoungerThan18.stream()
                 .mapToInt(Person::age)
-                .summaryStatistics().getAverage();
+                .average()
+                .orElse(Double.NaN);
 
-        System.out.println("Average year = " + averageAge);
+        if (peopleYoungerThan18.isEmpty()){
+            System.out.println("No people younger than 18 found");
+            return Collections.emptyList();
+        }
+
+        System.out.println("Average age = " + averageAge);
 
         return peopleYoungerThan18;
     }
 
-    public static Map<String, Double> getMap(List<Person> personList) {
-        return personList.stream()
+    public static Map<String, Double> getMap(List<Person> personsList) {
+        return personsList.stream()
                 .collect(Collectors.groupingBy(
                         Person::name,
                         Collectors.averagingInt(Person::age)
                 ));
     }
 
-    public static void printPeopleFrom20To45(List<Person> personList) {
-        List<String> people = personList.stream()
+    public static void printPeopleFrom20To45(List<Person> personsList) {
+        List<String> people = personsList.stream()
                 .filter(x -> x.age() >= 20 && x.age() <= 45)
                 .sorted(Comparator.comparingInt(Person::age).reversed())
                 .map(Person::name)
@@ -91,8 +105,9 @@ public class Main {
 
     public static void printFibonacciNumbers(int numbersCount) {
         Stream
-                .iterate(new int[]{0, 1}, fib -> new int[]{fib[1], fib[0] + fib[1]})
+                .iterate(new int[]{0, 1}, fibonacciNumbers -> new int[]{fibonacciNumbers[1], fibonacciNumbers[0] + fibonacciNumbers[1]})
+                .map(fibonacciNumbers->fibonacciNumbers[0])
                 .limit(numbersCount)
-                .forEach(fib -> System.out.println(fib[0] + " "));
+                .forEach(System.out::println);
     }
 }
