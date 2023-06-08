@@ -56,10 +56,10 @@ public class SinglyLinkedList<E> {
             return removeFirst();
         }
 
-        ListItem<E> item = getItemByIndex(index - 1);
+        ListItem<E> previousItem = getItemByIndex(index - 1);
 
-        E removedData = item.getNext().getData();
-        item.setNext(item.getNext().getNext());
+        E removedData = previousItem.getNext().getData();
+        previousItem.setNext(previousItem.getNext().getNext());
 
         size--;
         return removedData;
@@ -128,10 +128,15 @@ public class SinglyLinkedList<E> {
 
     public SinglyLinkedList<E> copy() {
         SinglyLinkedList<E> copy = new SinglyLinkedList<>();
+        copy.size = size;
+
+        if (head == null) {
+            return copy;
+        }
+
         ListItem<E> currentItem = head;
         ListItem<E> newItem = new ListItem<>(currentItem.getData());
         copy.head = newItem;
-        copy.size++;
         ListItem<E> lastNewItem = newItem;
 
         while (currentItem.getNext() != null) {
@@ -140,7 +145,6 @@ public class SinglyLinkedList<E> {
 
             lastNewItem.setNext(newItem);
             lastNewItem = newItem;
-            copy.size++;
         }
 
         return copy;
