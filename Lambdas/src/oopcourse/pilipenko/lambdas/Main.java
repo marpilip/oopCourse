@@ -27,7 +27,7 @@ public class Main {
 
         printUniqueNames(personsList);
         System.out.println(getPeopleYoungerThan18(personsList));
-        System.out.println(getMap(personsList));
+        System.out.println(getPeoplesAverageAge(personsList));
         printPeopleFrom20To45(personsList);
 
         Scanner scanner = new Scanner(System.in);
@@ -62,22 +62,20 @@ public class Main {
                 .filter(p -> p.age() < 18)
                 .toList();
 
+        if (peopleYoungerThan18.isEmpty()) {
+            System.out.println("No people younger than 18 found");
+            return Collections.emptyList();
+        }
+
         double averageAge = peopleYoungerThan18.stream()
                 .mapToInt(Person::age)
                 .average()
                 .orElse(Double.NaN);
 
-        if (peopleYoungerThan18.isEmpty()){
-            System.out.println("No people younger than 18 found");
-            return Collections.emptyList();
-        }
-
-        System.out.println("Average age = " + averageAge);
-
         return peopleYoungerThan18;
     }
 
-    public static Map<String, Double> getMap(List<Person> personsList) {
+    public static Map<String, Double> getPeoplesAverageAge(List<Person> personsList) {
         return personsList.stream()
                 .collect(Collectors.groupingBy(
                         Person::name,
@@ -86,13 +84,13 @@ public class Main {
     }
 
     public static void printPeopleFrom20To45(List<Person> personsList) {
-        List<String> people = personsList.stream()
+        List<String> peoplesNames = personsList.stream()
                 .filter(x -> x.age() >= 20 && x.age() <= 45)
                 .sorted(Comparator.comparingInt(Person::age).reversed())
                 .map(Person::name)
                 .collect(Collectors.toList());
 
-        System.out.println(people);
+        System.out.println(peoplesNames);
     }
 
     public static void printNumbersRoots(int numbersCount) {
@@ -106,7 +104,7 @@ public class Main {
     public static void printFibonacciNumbers(int numbersCount) {
         Stream
                 .iterate(new int[]{0, 1}, fibonacciNumbers -> new int[]{fibonacciNumbers[1], fibonacciNumbers[0] + fibonacciNumbers[1]})
-                .map(fibonacciNumbers->fibonacciNumbers[0])
+                .map(fibonacciNumbers -> fibonacciNumbers[0])
                 .limit(numbersCount)
                 .forEach(System.out::println);
     }
