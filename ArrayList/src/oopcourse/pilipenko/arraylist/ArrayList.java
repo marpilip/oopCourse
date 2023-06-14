@@ -29,12 +29,12 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    public void ensureCapacity() {
+    private void increaseCapacity() {
         if (elements.length == 0) {
             //noinspection unchecked
             elements = (E[]) new Object[DEFAULT_CAPACITY];
         } else {
-            ensureCapacity(elements.length * 2);
+            elements = Arrays.copyOf(elements, elements.length * 2);
         }
     }
 
@@ -102,6 +102,11 @@ public class ArrayList<E> implements List<E> {
 
         // noinspection SuspiciousSystemArraycopy
         System.arraycopy(elements, 0, a, 0, elementsCount);
+
+        if (a.length > elementsCount) {
+            a[elementsCount] = null;
+        }
+
         return a;
     }
 
@@ -160,11 +165,10 @@ public class ArrayList<E> implements List<E> {
         ensureCapacity(elements.length + c.size());
 
         if (index != elementsCount) {
-            int shift = elementsCount - index;
-            System.arraycopy(elements, index, elements, index + c.size(), shift);
+            System.arraycopy(elements, index, elements, index + c.size(), elementsCount - index);
         }
 
-        int i = index;
+        int i = index - 1;
 
         for (E element : c) {
             i++;
@@ -253,7 +257,7 @@ public class ArrayList<E> implements List<E> {
         checkIndexForAdd(index);
 
         if (elementsCount >= elements.length) {
-            ensureCapacity();
+            increaseCapacity();
         }
 
         if (index != elementsCount) {
