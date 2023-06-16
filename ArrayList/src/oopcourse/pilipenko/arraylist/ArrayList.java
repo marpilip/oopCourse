@@ -171,8 +171,8 @@ public class ArrayList<E> implements List<E> {
         int i = index - 1;
 
         for (E element : c) {
-            i++;
             elements[i] = element;
+            i++;
         }
 
         elementsCount += c.size();
