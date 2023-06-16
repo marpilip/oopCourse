@@ -49,11 +49,11 @@ public class HashTable<E> implements Collection<E> {
             return false;
         }
 
-        return lists[index].contains(o);
+        return lists[index] != null && lists[index].contains(o);
     }
 
     private class HashTableIterator implements Iterator<E> {
-        private final int changesCountBeforeIteratorPass = changesCount;
+        private int changesCountBeforeIteratorPass = changesCount;
         private int currentIndex = -1;
         private Iterator<E> currentIterator;
         private int visitedElementsCount;
@@ -99,6 +99,7 @@ public class HashTable<E> implements Collection<E> {
             try {
                 currentIterator.remove();
                 changesCount++;
+                changesCountBeforeIteratorPass++;
                 size--;
                 visitedElementsCount--;
             } catch (IllegalStateException e) {
@@ -126,7 +127,7 @@ public class HashTable<E> implements Collection<E> {
     }
 
     @Override
-    public <T> T[] toArray(T[] a) throws ArrayIndexOutOfBoundsException {
+    public <T> T[] toArray(T[] a) {
         if (a.length < size) {
             //noinspection SingleStatementInBlock,unchecked
             return (T[]) Arrays.copyOf(toArray(), size, a.getClass());
@@ -136,11 +137,8 @@ public class HashTable<E> implements Collection<E> {
 
         for (E element : this) {
             //noinspection unchecked
-            a[i + 1] = (T) element;
-        }
-
-        if (a.length > size) {
-            a[size] = null;
+            a[i] = (T) element;
+            i++;
         }
 
         return a;
@@ -187,18 +185,19 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        boolean isChanged = false;
-
         for (E element : c) {
             add(element);
-            isChanged = true;
         }
 
-        return isChanged;
+        return !c.isEmpty();
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
+        if (c.isEmpty()) {
+            return true;
+        }
+
         if (size == 0) {
             return false;
         }
@@ -224,15 +223,10 @@ public class HashTable<E> implements Collection<E> {
 
         boolean isRemoved = false;
 
-        for (int i = 0; i < lists.length; i++) {
-
-            if (lists[i] != null && lists[i].retainAll(c)) {
+        for (ArrayList<E> list : lists) {
+            if (list != null && list.retainAll(c)) {
                 isRemoved = true;
-                size -= lists[i].size();
-
-                if (lists[i].isEmpty()) {
-                    lists[i] = null;
-                }
+                size -= list.size();
             }
         }
 
