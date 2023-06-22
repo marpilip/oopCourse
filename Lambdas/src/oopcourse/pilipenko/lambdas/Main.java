@@ -27,12 +27,13 @@ public class Main {
 
         printUniqueNames(personsList);
         System.out.println(getPeopleYoungerThan18(personsList));
-        System.out.println(getPeoplesAverageAge(personsList));
+        System.out.println("Средний возраст людей младше 18 = " + averageAgeOfPeople(getPeopleYoungerThan18(personsList)));
+        System.out.println(getAverageAgesByNames(personsList));
         printPeopleFrom20To45(personsList);
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Введите число до которого вывести корни чисел:");
+        System.out.println("Введите количество чисел из которых необходимо взять корень:");
         int numbersCount = scanner.nextInt();
 
         printNumbersRoots(numbersCount);
@@ -67,15 +68,17 @@ public class Main {
             return Collections.emptyList();
         }
 
-        double averageAge = peopleYoungerThan18.stream()
-                .mapToInt(Person::age)
-                .average()
-                .orElse(Double.NaN);
-
         return peopleYoungerThan18;
     }
 
-    public static Map<String, Double> getPeoplesAverageAge(List<Person> personsList) {
+    public static double averageAgeOfPeople(List<Person> personsList) {
+        return personsList.stream()
+                .mapToInt(Person::age)
+                .average()
+                .orElse(Double.NaN);
+    }
+
+    public static Map<String, Double> getAverageAgesByNames(List<Person> personsList) {
         return personsList.stream()
                 .collect(Collectors.groupingBy(
                         Person::name,
