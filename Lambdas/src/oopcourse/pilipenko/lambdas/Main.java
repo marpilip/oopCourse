@@ -26,9 +26,12 @@ public class Main {
         System.out.println("Список уникальных имен: " + uniqueNames);
 
         printUniqueNames(personsList);
-        System.out.println(getPeopleYoungerThan18(personsList));
-        System.out.println("Средний возраст людей младше 18 = " + averageAgeOfPeople(getPeopleYoungerThan18(personsList)));
-        System.out.println(getAverageAgesByNames(personsList));
+
+        List<Person> peopleYoungerThan18 = getPeopleYoungerThan18(personsList);
+        System.out.println("Список людей младше 18: " + peopleYoungerThan18);
+        System.out.println("Средний возраст людей младше 18 = " + getAveragePeopleAge(peopleYoungerThan18));
+
+        System.out.println("Список людей со средним возрастом по именам: " + getAverageAgesByNames(personsList));
         printPeopleFrom20To45(personsList);
 
         Scanner scanner = new Scanner(System.in);
@@ -59,19 +62,12 @@ public class Main {
     }
 
     public static List<Person> getPeopleYoungerThan18(List<Person> personsList) {
-        List<Person> peopleYoungerThan18 = personsList.stream()
+        return personsList.stream()
                 .filter(p -> p.age() < 18)
                 .toList();
-
-        if (peopleYoungerThan18.isEmpty()) {
-            System.out.println("No people younger than 18 found");
-            return Collections.emptyList();
-        }
-
-        return peopleYoungerThan18;
     }
 
-    public static double averageAgeOfPeople(List<Person> personsList) {
+    public static double getAveragePeopleAge(List<Person> personsList) {
         return personsList.stream()
                 .mapToInt(Person::age)
                 .average()
@@ -91,9 +87,9 @@ public class Main {
                 .filter(x -> x.age() >= 20 && x.age() <= 45)
                 .sorted(Comparator.comparingInt(Person::age).reversed())
                 .map(Person::name)
-                .collect(Collectors.toList());
+                .toList();
 
-        System.out.println(peoplesNames);
+        System.out.println("Список людей от 20 до 45 лет: " + peoplesNames);
     }
 
     public static void printNumbersRoots(int numbersCount) {
