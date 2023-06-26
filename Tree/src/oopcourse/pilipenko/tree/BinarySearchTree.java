@@ -1,70 +1,97 @@
 package oopcourse.pilipenko.tree;
 
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
+import java.util.function.Consumer;
 
-public class BinarySearchTree<T extends Comparable<T>> {
-    public TreeNode<T> root;
+public class BinarySearchTree<E> {
+    public TreeNode<E> root;
     private int size;
 
     public BinarySearchTree() {
     }
 
-    public void insert(T data) {
-        root = insert(root, data);
-        size++;
+    public BinarySearchTree(Comparator<E> comparator) {
     }
 
-    private TreeNode<T> insert(TreeNode<T> node, T data) {
-        if (node == null) {
-            return new TreeNode<>(data);
+    public void insert(E data) {
+        if (root == null) {
+            root = new TreeNode<>(data);
+            size++;
+            return;
         }
 
-        if (data.compareTo(node.getData()) < 0) {
-            node.setLeft(insert(node.getLeft(), data));
+        TreeNode<E> parent = null;
+        TreeNode<E> currentNode = root;
+
+        while (currentNode != null) {
+            if (currentNode.compareTo(data) == 0) {
+                return;
+            }
+
+            parent = currentNode;
+
+            if (currentNode.compareTo(data) > 0) {
+                currentNode = currentNode.getLeft();
+            } else {
+                currentNode = currentNode.getRight();
+            }
+        }
+
+        TreeNode<E> newNode = new TreeNode<>(data);
+
+        if (parent.compareTo(data) > 0) {
+            parent.setLeft(newNode);
         } else {
-            node.setRight(insert(node.getRight(), data));
+            parent.setRight(newNode);
         }
 
-        return node;
+        size++;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        toStringRecursive(root, sb);
+        Queue<TreeNode<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode<E> node = queue.poll();
+
+            if (node == null) {
+                return "";
+            }
+
+            sb.append("Node: ").append(node.getData()).append(" [");
+
+            if (node.getLeft() != null) {
+                queue.offer(node.getLeft());
+                sb.append("Left child: ").append(node.getLeft().getData());
+            }
+
+            if (node.getRight() != null) {
+                queue.offer(node.getRight());
+                sb.append(" Right child: ").append(node.getRight().getData());
+            }
+
+            sb.append(']');
+            sb.append("\n");
+        }
+
         return sb.toString();
     }
 
-    private void toStringRecursive(TreeNode<T> current, StringBuilder sb) {
-        if (current == null) {
-            sb.append("null ");
-            return;
-        }
+    public boolean contains(E data) {
+        TreeNode<E> currentNode = root;
 
-        sb.append(current);
-    }
-
-    public boolean search(T data) {
-        return search(root, data);
-    }
-
-    private boolean search(TreeNode<T> root, T data) {
-        if (root.getData().equals(data)) {
-            return true;
-        }
-
-        if (data.compareTo(root.getData()) < 0) {
-            if (root.getLeft() != null) {
-                return search(root.getLeft(), data);
+        while (currentNode != null) {
+            if (currentNode.getData().equals(data)) {
+                return true;
             }
 
-            return false;
-        }
-
-        if (root.getRight() != null) {
-            return search(root.getRight(), data);
+            if (currentNode.compareTo(data) > 0) {
+                currentNode = currentNode.getLeft();
+            } else {
+                currentNode = currentNode.getRight();
+            }
         }
 
         return false;
@@ -74,20 +101,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return size;
     }
 
-    public boolean remove(T data) {
-        if (!search(data)) {
-            throw new NoSuchElementException("Элемента " + data + " нет в дереве");
-        }
-
+    public boolean remove(E data) {
         if (root == null) {
-            throw new NullPointerException("Узел не существует");
-        }
-
-        TreeNode<T> nodeToRemove = getNode(root, data);
-
-        if (nodeToRemove == null) {
             return false;
         }
+
+        TreeNode<E>[] nodeAndParent = getNodeAndParent(data);
+
+        if (nodeAndParent == null) {
+            return false;
+        }
+
+        TreeNode<E> nodeToRemove = nodeAndParent[0];
 
         if (nodeToRemove == root) {
             root = removeNode(nodeToRemove);
@@ -96,7 +121,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return true;
         }
 
-        TreeNode<T> parent = getParent(data);
+        TreeNode<E> parent = nodeAndParent[1];
 
         if (parent.getLeft() == nodeToRemove) {
             parent.setLeft(removeNode(nodeToRemove));
@@ -108,7 +133,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return true;
     }
 
-    private TreeNode<T> removeNode(TreeNode<T> nodeToRemove) {
+    private TreeNode<E> removeNode(TreeNode<E> nodeToRemove) {
         if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null) {  // 1. list
             return null;
         }
@@ -121,65 +146,60 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return nodeToRemove.getLeft();
         }
 
-        TreeNode<T> minRight = nodeToRemove.getRight();  // 3. two child
-        TreeNode<T> parentOfMinRight = nodeToRemove;
+        TreeNode<E> minRightNode = nodeToRemove.getRight();  // 3. two child
+        TreeNode<E> parentOfMinRightNode = nodeToRemove;
 
-        while (minRight.getLeft() != null) {
-            parentOfMinRight = minRight;
-            minRight = minRight.getLeft();
+        while (minRightNode.getLeft() != null) {
+            parentOfMinRightNode = minRightNode;
+            minRightNode = minRightNode.getLeft();
         }
 
-        nodeToRemove.setData(minRight.getData());
-
-        if (parentOfMinRight == nodeToRemove) {
-            nodeToRemove.setRight(minRight.getRight());
-        } else {
-            parentOfMinRight.setLeft(minRight.getRight());
+        if (parentOfMinRightNode != nodeToRemove) {
+            parentOfMinRightNode.setLeft(minRightNode.getRight());
+            minRightNode.setRight(nodeToRemove.getRight());
         }
 
-        return nodeToRemove;
+        minRightNode.setLeft(nodeToRemove.getLeft());
+
+        return minRightNode;
     }
 
-    private TreeNode<T> getParent(T data) {
-        TreeNode<T> parent = null;
-        TreeNode<T> node = root;
+    private TreeNode<E>[] getNodeAndParent(E data) {
+        TreeNode<E> parent = null;
+        TreeNode<E> node = root;
 
-        while (node != null && !node.getData().equals(data)) {
+        if (root == null) {
+            return null;
+        }
+
+        while (node != null && node.compareTo(data) != 0) {
             parent = node;
 
-            if (data.compareTo(node.getData()) < 0) {
+            if (node.compareTo(data) > 0) {
                 node = node.getLeft();
             } else {
                 node = node.getRight();
             }
         }
 
-        return parent;
+        TreeNode<E>[] nodeAndParent = new TreeNode[2];
+        nodeAndParent[0] = node;
+        nodeAndParent[1] = parent;
+
+        return nodeAndParent;
     }
 
-    public TreeNode<T> getNode(TreeNode<T> node, T data) {
-        if (node == null || node.getData().equals(data)) {
-            return node;
-        }
-
-        if (data.compareTo(node.getData()) < 0) {
-            return getNode(node.getLeft(), data);
-        }
-
-        return getNode(node.getRight(), data);
-    }
-
-    public void breadthTraversal() {
+    public void traverseBreadth(Consumer<E> consumer) {
         if (root == null) {
             return;
         }
 
-        Queue<TreeNode<T>> queue = new LinkedList<>();
+        Queue<TreeNode<E>> queue = new LinkedList<>();
         queue.offer(root);
 
         while (!queue.isEmpty()) {
-            TreeNode<T> currentNode = queue.poll();
-            System.out.println("Node data = " + currentNode.getData());
+            TreeNode<E> currentNode = queue.poll();
+            consumer.accept(currentNode.getData());
 
             if (currentNode.getLeft() != null) {
                 queue.offer(currentNode.getLeft());
@@ -191,40 +211,40 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    public void depthTraversalWithRecursion() {
-        depthTraversalWithRecursion(root);
+    public void traverseDepthWithRecursion(Consumer<E> consumer) {
+        traverseDepthWithRecursion(root, consumer);
     }
 
-    private void depthTraversalWithRecursion(TreeNode<T> root) {
+    private void traverseDepthWithRecursion(TreeNode<E> node, Consumer<E> consumer) {
+        if (node == null) {
+            return;
+        }
+
+        consumer.accept(node.getData());
+
+        traverseDepthWithRecursion(node.getLeft(), consumer);
+        traverseDepthWithRecursion(node.getRight(), consumer);
+    }
+
+    public void traverseDepth(Consumer<E> consumer) {
         if (root == null) {
             return;
         }
 
-        System.out.println("Node data = " + root.getData());
+        Deque<TreeNode<E>> deque = new ArrayDeque<>();
 
-        depthTraversalWithRecursion(root.getLeft());
-        depthTraversalWithRecursion(root.getRight());
-    }
+        deque.push(root);
 
-    public void depthTraversalWithoutRecursion() {
-        if (root == null) {
-            return;
-        }
-
-        Stack<TreeNode<T>> stack = new Stack<>();
-
-        stack.push(root);
-
-        while (!stack.isEmpty()) {
-            TreeNode<T> currentNode = stack.pop();
-            System.out.println("Node data = " + currentNode.getData());
+        while (!deque.isEmpty()) {
+            TreeNode<E> currentNode = deque.pop();
+            consumer.accept(currentNode.getData());
 
             if (currentNode.getRight() != null) {
-                stack.push(currentNode.getRight());
+                deque.push(currentNode.getRight());
             }
 
-            if (currentNode.getLeft()!= null){
-                stack.push(currentNode.getLeft());
+            if (currentNode.getLeft() != null) {
+                deque.push(currentNode.getLeft());
             }
         }
     }
