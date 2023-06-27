@@ -38,6 +38,7 @@ public class Main {
         integers.add(12333);
         integers.add(14);
         System.out.println("Integers: " + integers);
+
         System.out.println("Исключение элементов, которые не содержатся в коллекции integers: " + hashTable.retainAll(integers)
                 + ". Hash Table: " + hashTable);
 

@@ -128,6 +128,10 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
+        if (a == null) {
+            throw new NullPointerException("Переданный массив = null");
+        }
+
         if (a.length < size) {
             //noinspection SingleStatementInBlock,unchecked
             return (T[]) Arrays.copyOf(toArray(), size, a.getClass());
@@ -139,6 +143,10 @@ public class HashTable<E> implements Collection<E> {
             //noinspection unchecked
             a[i] = (T) element;
             i++;
+        }
+
+        if (i < a.length) {
+            a[i] = null;
         }
 
         return a;
@@ -195,7 +203,7 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean removeAll(Collection<?> c) {
         if (c.isEmpty()) {
-            return true;
+            return false;
         }
 
         if (size == 0) {
@@ -224,9 +232,13 @@ public class HashTable<E> implements Collection<E> {
         boolean isRemoved = false;
 
         for (ArrayList<E> list : lists) {
-            if (list != null && list.retainAll(c)) {
-                isRemoved = true;
-                size -= list.size();
+            if (list != null) {
+                int originalSize = list.size();
+
+                if (list.retainAll(c)) {
+                    isRemoved = true;
+                    size -= (originalSize - list.size());
+                }
             }
         }
 
