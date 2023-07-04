@@ -6,11 +6,33 @@ import java.util.function.Consumer;
 public class BinarySearchTree<E> {
     public TreeNode<E> root;
     private int size;
+    private Comparator<E> comparator;
 
     public BinarySearchTree() {
     }
 
     public BinarySearchTree(Comparator<E> comparator) {
+        this.comparator = comparator;
+    }
+
+    public int compareTo(E data1, E data2) {
+        if (comparator != null) {
+            return comparator.compare(data1, data2);
+        }
+
+        if (data1 == null && data2 == null) {
+            return 0;
+        }
+
+        if (data1 == null) {
+            return -1;
+        }
+
+        if (data2 == null) {
+            return 1;
+        }
+
+        return ((Comparable<E>) data1).compareTo(data2);
     }
 
     public void insert(E data) {
@@ -20,61 +42,49 @@ public class BinarySearchTree<E> {
             return;
         }
 
-        TreeNode<E> parent = null;
         TreeNode<E> currentNode = root;
 
         while (currentNode != null) {
-            if (currentNode.compareTo(data) == 0) {
-                return;
-            }
+            if (compareTo(currentNode.getData(), data) > 0) {
+                if (currentNode.getLeft() == null) {
+                    currentNode.setLeft(new TreeNode<>(data));
+                    size++;
+                    return;
+                }
 
-            parent = currentNode;
-
-            if (currentNode.compareTo(data) > 0) {
                 currentNode = currentNode.getLeft();
             } else {
+                if (currentNode.getRight() == null) {
+                    currentNode.setRight(new TreeNode<>(data));
+                    size++;
+                    return;
+                }
+
                 currentNode = currentNode.getRight();
             }
         }
-
-        TreeNode<E> newNode = new TreeNode<>(data);
-
-        if (parent.compareTo(data) > 0) {
-            parent.setLeft(newNode);
-        } else {
-            parent.setRight(newNode);
-        }
-
-        size++;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        Queue<TreeNode<E>> queue = new LinkedList<>();
-        queue.offer(root);
 
-        while (!queue.isEmpty()) {
-            TreeNode<E> node = queue.poll();
+        traverseBreadth(data -> {
+            sb.append("Node: ").append(data).append(" [");
+            TreeNode<E> node = getNodeAndParent(data)[0];
 
-            if (node == null) {
-                return "";
-            }
+            if (node != null) {
+                if (node.getLeft() != null) {
+                    sb.append("Left child: ").append(node.getLeft().getData());
+                }
 
-            sb.append("Node: ").append(node.getData()).append(" [");
-
-            if (node.getLeft() != null) {
-                queue.offer(node.getLeft());
-                sb.append("Left child: ").append(node.getLeft().getData());
-            }
-
-            if (node.getRight() != null) {
-                queue.offer(node.getRight());
-                sb.append(" Right child: ").append(node.getRight().getData());
+                if (node.getRight() != null) {
+                    sb.append(" Right child: ").append(node.getRight().getData());
+                }
             }
 
             sb.append(']');
-            sb.append("\n");
-        }
+            sb.append(System.lineSeparator());
+        });
 
         return sb.toString();
     }
@@ -83,11 +93,17 @@ public class BinarySearchTree<E> {
         TreeNode<E> currentNode = root;
 
         while (currentNode != null) {
-            if (currentNode.getData().equals(data)) {
+            if (currentNode.getData() == null && data == null) {
                 return true;
             }
 
-            if (currentNode.compareTo(data) > 0) {
+            int comparisonResult = compareTo(currentNode.getData(), data);
+
+            if (comparisonResult == 0) {
+                return true;
+            }
+
+            if (comparisonResult > 0) {
                 currentNode = currentNode.getLeft();
             } else {
                 currentNode = currentNode.getRight();
@@ -169,19 +185,34 @@ public class BinarySearchTree<E> {
         TreeNode<E> node = root;
 
         if (root == null) {
-            return null;
+            //noinspection unchecked
+            TreeNode<E>[] nodeAndParent = new TreeNode[2];
+            nodeAndParent[0] = null;
+            nodeAndParent[1] = null;
+
+            return nodeAndParent;
         }
 
-        while (node != null && node.compareTo(data) != 0) {
+        while (node != null && compareTo(node.getData(), data) != 0) {
             parent = node;
 
-            if (node.compareTo(data) > 0) {
+            if (compareTo(node.getData(), data) > 0) {
                 node = node.getLeft();
             } else {
                 node = node.getRight();
             }
         }
 
+        if (node == null) {
+            //noinspection unchecked
+            TreeNode<E>[] nodeAndParent = new TreeNode[2];
+            nodeAndParent[0] = null;
+            nodeAndParent[1] = null;
+
+            return nodeAndParent;
+        }
+
+        //noinspection unchecked
         TreeNode<E>[] nodeAndParent = new TreeNode[2];
         nodeAndParent[0] = node;
         nodeAndParent[1] = parent;
